@@ -97,15 +97,67 @@ class CarBuilder {
         return this.product;
     }
 }
-const hondaCivic = new CarBuilder()
-    .setBrand('Honda')
-    .setModel('Civic')
-    .setEngine('2.0 MPI')
-    .setWheels(4)
-    .setDoors(4)
-    .setSignal()
-    .setClimateSystem()
-    .setGPS()
-    .build();
-console.log(hondaCivic);
+class HondaManager {
+    constructor(builder) {
+        this.builder = builder;
+    }
+    buildHondaCivic() {
+        return this.builder
+            .setBrand('Honda')
+            .setModel('Civic')
+            .setEngine('2.0 MPI')
+            .setTransmission('CVT')
+            .setDoors(4)
+            .setWheels(4)
+            .setClimateSystem()
+            .build();
+    }
+    buildHondaAccord() {
+        return this.builder
+            .setBrand('Honda')
+            .setModel('Accord')
+            .setEngine('2.0 Turbocharged')
+            .setTransmission('CVT')
+            .setDoors(4)
+            .setWheels(4)
+            .setClimateSystem()
+            .setGPS()
+            .build();
+    }
+}
+class MazdaManager {
+    constructor(builder) {
+        this.builder = builder;
+    }
+    buildMazda3() {
+        return this.builder
+            .setBrand('Mazda')
+            .setModel('3')
+            .setEngine('2.0 SkyActive')
+            .setTransmission('Aisin')
+            .setDoors(2)
+            .setWheels(4)
+            .setClimateSystem()
+            .build();
+    }
+    buildMazda6() {
+        return this.builder
+            .setBrand('Mazda')
+            .setModel('6')
+            .setEngine('2.5 SkyActive')
+            .setTransmission('Aisin')
+            .setDoors(4)
+            .setWheels(4)
+            .setClimateSystem()
+            .setGPS()
+            .build();
+    }
+}
+const carBuilder = new CarBuilder();
+const hondaCivic = new HondaManager(carBuilder);
+const mazdaManager = new MazdaManager(carBuilder);
+let civic = hondaCivic.buildHondaAccord();
+let mazda3 = mazdaManager.buildMazda3();
+console.log(civic);
+console.log(mazda3);
 //# sourceMappingURL=app.js.map
