@@ -19,12 +19,12 @@ class Car {
         this.gearbox = new Gearbox();
         this.fuelPump = new FuelPump();
     }
-    starCar() {
+    startCar() {
         this.fuelPump.fuelSupply();
         this.engine.turnCrankshaft();
         this.gearbox.setGear('D');
     }
 }
 let audi = new Car();
-audi.starCar();
+audi.startCar();
 //# sourceMappingURL=app.js.map

@@ -26,11 +26,12 @@ class MazdaCar implements ICarTemplate {
 		this.gps = true;
 	}
 
-	clone(): this {
-		let copy = Object.create(this);
+	clone(): MazdaCar {
+		// let copy = Object.create(this);
+		let copy = new MazdaCar(this.model);
 
 		copy.brand = this.brand;
-		copy.model = this.model;
+		// copy.model = this.model;
 		copy.color = this.color;
 		copy.gps = this.gps;
 
@@ -47,6 +48,6 @@ const mazda6Black = mazda6.clone();
 mazda3WithGps.setGps();
 mazda6Black.setColor('black');
 
-console.log(mazda3WithGps.getFullName());
+
 
 

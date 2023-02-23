@@ -1,160 +1,92 @@
-interface IEquipment {
-	setName(name: string): void,
-	getName(): string,
-	setPrice(price: number): void,
-	getPrice(): number,
+interface IEmployee {
+	work(): void,
+	getSalary(): number,
 }
 
-class Equipment implements IEquipment {
+class Employee implements IEmployee {
 	private name: string;
-	private price: number;
+	private position: string;
+	private salary: number;
 
-	setName(name: string): void {
+	constructor(name: string, salary: number) {
 		this.name = name;
+		this.salary = salary;
 	}
-	getName(): string {
-		return this.name;
-	}
-	setPrice(price: number): void {
-		this.price = price;
-	}
-	getPrice(): number {
-		return this.price;
-	}
+
+	getName = (): string => this.name;
+
+	setName = (name: string): void => { this.name = name };
+
+	setPosition = (position: string): void => { this.position = position };
+
+	getSalary = (): number => this.salary;
+
+	work = (): void => console.log('I Working Now');
 }
 
-class Display extends Equipment {
-	constructor() {
-		super();
-		this.setName('LG 32E342B');
-		this.setPrice(350);
+class Designer extends Employee {
+	constructor(name: string, salary: number) {
+		super(name, salary);
+		this.setPosition('designer');
 	}
+
+	work = (): void => console.log('Open Figma');
 }
 
-class Keyboard extends Equipment {
-	constructor() {
-		super();
-		this.setName('Logitech G Pro');
-		this.setPrice(200);
+class JavaDeveloper extends Employee {
+	constructor(name: string, salary: number) {
+		super(name, salary);
+		this.setPosition('developer');
 	}
+
+	work = (): void => console.log('Write Java Code');
 }
 
-class Mouse extends Equipment {
-	constructor() {
-		super();
-		this.setName('Logitech MX Master 3S');
-		this.setPrice(100);
-	}
-}
-
-class Motherboard extends Equipment {
-	constructor() {
-		super();
-		this.setName('Asus ROG Crosshair X670E');
-		this.setPrice(650);
-	}
-}
-
-class GraphicCard extends Equipment {
-	constructor() {
-		super();
-		this.setName('Asus PCI-E GeForce RTX3060');
-		this.setPrice(480);
-	}
-}
-
-class RAM extends Equipment {
-	constructor() {
-		super();
-		this.setName('Kingston Fury DDR4 32GB');
-		this.setPrice(95);
-	}
-}
-
-class SSD extends Equipment {
-	constructor() {
-		super();
-		this.setName('Crucial MX500 1TB');
-		this.setPrice(83);
-	}
-}
-
-class CompositeEquipment extends Equipment {
-	protected equipments: IEquipment[] = [];
-
-	add(equipment: IEquipment): void {
-		this.equipments.push(equipment);
+class JsDeveloper extends Employee {
+	constructor(name: string, salary: number) {
+		super(name, salary);
+		this.setPosition('developer');
 	}
 
-	remove(equipment: IEquipment) {
-		let indexElem: number = this.equipments.indexOf(equipment);
-		this.equipments.splice(indexElem, 1);
-	}
-
-	getPrice(): number {
-		return this.equipments
-			.map(equipment => equipment.getPrice())
-			.reduce((acc, value) => acc + value);
-	}
-}
-
-class SystemUnit extends CompositeEquipment {
-	// private equipments: IEquipment[] = [];
-
-	// add(equipment: IEquipment): void {
-	// 	this.equipments.push(equipment);
-	// }
-
-	// remove(equipment: IEquipment) {
-	// 	let indexElem: number = this.equipments.indexOf(equipment);
-	// 	this.equipments.splice(indexElem, 1);
-	// }
-
-	// getPrice(): number {
-	// 	return this.equipments
-	// 		.map(equipment => equipment.getPrice())
-	// 		.reduce((acc, value) => acc + value);
-	// }
-}
-
-class PC extends CompositeEquipment {
-	// private equipments: IEquipment[] = [];
-
-	// add(equipment: IEquipment): void {
-	// 	this.equipments.push(equipment);
-	// }
-
-	// remove(equipment: IEquipment) {
-	// 	let indexElem: number = this.equipments.indexOf(equipment);
-	// 	this.equipments.splice(indexElem, 1);
-	// }
-
-	// getPrice(): number {
-	// 	return this.equipments
-	// 		.map(equipment => equipment.getPrice())
-	// 		.reduce((acc, value) => acc + value);
-	// }
+	work = (): void => console.log('Write JS Code');
 }
 
 
+class Company implements IEmployee {
+	private empList: IEmployee[] = [];
 
-const display = new Display();
-const keyboard = new Keyboard();
-const mouse = new Mouse();
-const motherboard = new Motherboard();
-const graphicCard = new GraphicCard();
-const ram = new RAM();
-const ssd = new SSD();
-const sysUnit = new SystemUnit();
-const pc = new PC();
+	add(...employees: IEmployee[]): void {
+		for (let emp of employees) {
+			this.empList.push(emp);
+		}
+	}
 
-sysUnit.add(motherboard);
-sysUnit.add(ram);
-sysUnit.add(ssd);
-sysUnit.add(graphicCard);
-pc.add(display);
-pc.add(keyboard);
-pc.add(mouse);
-pc.add(sysUnit);
+	remove(emp: IEmployee): void {
+		let indexEmp = this.empList.indexOf(emp);
+		this.empList.splice(indexEmp, 1);
+	}
 
-console.log(pc.getPrice());
+	getSalary(): number {
+		let sum = 0;
+
+		this.empList.forEach(emp => { sum += emp.getSalary() });
+
+		console.log(`Salary fund: $${sum}`);
+
+		return sum;
+	}
+
+	work(): void {
+		this.empList.forEach(elem => elem.work());
+	}
+}
+
+let company = new Company();
+let designer = new Designer('Sarah', 2380);
+let jsDev = new JsDeveloper('Mark', 2500);
+let javaDev = new JavaDeveloper('Simon', 4000);
+
+company.add(designer, jsDev, javaDev);
+
+company.work();
+company.getSalary();

@@ -1,6 +1,6 @@
 interface IPerson {
 	getName(): string;
-	getLastName():string,
+	getLastName(): string,
 }
 
 class Person implements IPerson {
@@ -14,7 +14,7 @@ class Person implements IPerson {
 }
 
 class Company {
-	private allPersons: { [key: string]: Person } = <any>{};
+	private allPersons: { [key: string]: Person } = {};
 
 	addPerson(name: string, lastName: string): IPerson {
 		let concat: string = name + '_' + lastName;
