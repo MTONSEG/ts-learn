@@ -3,7 +3,7 @@ interface IPayment {
 	setPayer(payer: IPayment): IPayment
 }
 
-abstract class Payment implements IPayment {
+class Payment implements IPayment {
 	private name: string;
 	private balance: number;
 	private nextPay: IPayment;

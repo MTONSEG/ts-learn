@@ -1,63 +1,24 @@
-class NissanLeaf {
-    useChademo() {
-        console.log('Car is charging via CHAdeMO');
+class AppleCharger {
+    useLightning() {
+        console.log(`Charging Apple Device`);
     }
 }
-class TeslaModelS {
-    useCss() {
-        console.log('Car is charging via CCS');
+class AndroidCharger {
+    useTypeC() {
+        console.log(`Charging Android Device`);
     }
 }
-class ChademoToCCSAdapter {
-    constructor(charger) {
-        this.adapter = charger;
-    }
-    useCss() {
-        this.adapter.useChademo();
-    }
-}
-class FileHosting {
-    upload(file) {
-        return `Upload file: ${file}`;
-    }
-    download(file) {
-        return `Download file: ${file}`;
-    }
-    getFile(file) {
-        return `Show file: ${file}`;
-    }
-}
-class NEWFileHosting {
-    addFile(file) {
-        return `Upload file: ${file}`;
-    }
-    loadFile(file) {
-        return `Download file: ${file}`;
-    }
-    showFile(file) {
-        return `Show file: ${file}`;
-    }
-}
-class HostingAdapter extends NEWFileHosting {
-    constructor(adapter) {
+class LightningToTypeCAdapter extends AndroidCharger {
+    constructor(device) {
         super();
-        this.adapter = adapter;
+        this.device = device;
     }
-    addFile(file) {
-        let adapted = this.adapter.upload(file);
-        return `${adapted} via New Interface =)`;
-    }
-    loadFile(file) {
-        let adapted = this.adapter.download(file);
-        return `${adapted} via New Interface =)`;
-    }
-    showFile(file) {
-        let adapted = this.adapter.getFile(file);
-        return `${adapted} via New Interface =)`;
+    useLightning() {
+        this.device.useTypeC();
     }
 }
-const hosting = new FileHosting();
-console.log(hosting.upload('Picture'));
-const adapter = new HostingAdapter(hosting);
-console.log(adapter.addFile('Video'));
+let appleCharger = new AppleCharger();
+let androidCharger = new AndroidCharger();
+let adapter = new LightningToTypeCAdapter(androidCharger);
+adapter.useLightning();
 //# sourceMappingURL=app.js.map
