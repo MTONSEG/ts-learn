@@ -1,39 +1,48 @@
-class TextChat {
+class Project {
     constructor() {
-        this.users = [];
-        this.addUser = (user) => { this.users.push(user); };
+        this.saveState = () => new Memento(this.code, this.version, this.date);
+        this.restoreState = (memento) => {
+            this.code = memento.getState();
+            this.version = memento.getVersion();
+            this.date = memento.getDate();
+        };
     }
-    sendMess(mess, user) {
-        if (!this.users.includes(user)) {
-            console.log(`You can't send message in this chat`);
-        }
-        else {
-            for (let u of this.users) {
-                if (u != user) {
-                    u.getMess(mess);
-                }
-            }
-        }
+    setState(state, version) {
+        this.code = state;
+        this.version = version;
+        this.date = new Date();
     }
-}
-class User {
-    constructor(name, chat) {
-        this.name = name;
-        this.chat = chat;
-        this.setChat = (chat) => { this.chat = chat; };
-        this.setName = (name) => { this.name = name; };
-        this.getName = () => this.name;
-        this.sendMess = (mess) => { this.chat.sendMess(mess, this); };
-        this.getMess = (mess) => { console.log(`${this.name}: ${mess}`); };
+    getState() {
+        let result = this.code + '\n------' +
+            '\nversion: ' + this.version +
+            '\ndate: ' + this.date + '\n';
+        console.log(result);
+        return result;
     }
 }
-const textChat = new TextChat();
-const ivan = new User('Ivan', textChat);
-const vlad = new User('Vlad', textChat);
-const max = new User('Max', textChat);
-textChat.addUser(max);
-textChat.addUser(vlad);
-textChat.addUser(ivan);
-max.sendMess('I am first!');
-vlad.sendMess('I am second!');
+class Memento {
+    constructor(code, version, date) {
+        this.code = code;
+        this.version = version;
+        this.date = date;
+        this.getState = () => this.code;
+        this.getVersion = () => this.version;
+        this.getDate = () => this.date;
+    }
+}
+class Github {
+    constructor() {
+        this.setMemento = (memento) => { this.memento = memento; };
+        this.getMemento = () => this.memento;
+    }
+}
+const project = new Project();
+const github = new Github();
+project.setState('I am a TypeScript Code =)', '1.0.0');
+project.getState();
+github.setMemento(project.saveState());
+project.setState('I am a very bad TypeScript Code =(', '1.0.1');
+project.getState();
+project.restoreState(github.getMemento());
+project.getState();
 //# sourceMappingURL=app.js.map
