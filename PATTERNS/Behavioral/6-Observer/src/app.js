@@ -2,8 +2,31 @@ class Subscriber {
     constructor(name) {
         this.name = name;
     }
+    getName() {
+        return this.name;
+    }
     update(vacancies) {
         console.log(`Hi ${this.name}\n We have some changes in vacancies:\n ${vacancies}\n=======`);
+    }
+}
+class MyTelegram {
+    getName() {
+        return this.name;
+    }
+    setName(name) {
+        this.name = name;
+    }
+    getMess() {
+        return '3434';
+    }
+}
+class Test {
+    constructor(name) {
+        this.name = name;
+        this.test.setName(name);
+    }
+    update(vacancies) {
+        console.log(`Hi ${this.test.getName()}\n We have some changes in vacancies:\n ${vacancies}\n=======`);
     }
 }
 class JobSite {
@@ -20,16 +43,16 @@ class JobSite {
         this.vacancies.splice(indexVacancy, 1);
         this.notifyObservers();
     }
-    addObserver(observer) {
+    subscribe(observer) {
         this.subscribers.push(observer);
     }
-    removeObserver(observer) {
+    unsubscribe(observer) {
         let indexVacancy = this.subscribers.indexOf(observer);
         this.subscribers.splice(indexVacancy, 1);
     }
     notifyObservers() {
-        for (let subscriber of this.subscribers) {
-            subscriber.update(this.vacancies);
+        for (let observer of this.subscribers) {
+            observer.update(this.vacancies);
         }
     }
 }
@@ -37,9 +60,11 @@ const vacancyDevSite = new JobSite();
 const ivan = new Subscriber('Ivan');
 const alex = new Subscriber('Alex');
 const john = new Subscriber('John');
-vacancyDevSite.addObserver(ivan);
-vacancyDevSite.addObserver(alex);
-vacancyDevSite.addObserver(john);
+const test = new Test('Test');
+vacancyDevSite.subscribe(ivan);
+vacancyDevSite.subscribe(alex);
+vacancyDevSite.subscribe(john);
+// vacancyDevSite.subscribe(test);
 vacancyDevSite.addVacancy('Junior JS Developer');
 vacancyDevSite.addVacancy('Senior Java Developer');
 vacancyDevSite.addVacancy('Middle Java Developer');

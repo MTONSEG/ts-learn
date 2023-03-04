@@ -20,6 +20,27 @@ class Subscriber implements Observer {
 	}
 }
 
+class MyTelegram {
+	private name: string;
+
+	getName(): string {
+		return this.name;
+	}
+	setName(name: string) {
+		this.name = name;
+	}
+	getMess(): string {
+		return '3434';
+	}
+}
+
+class Test extends MyTelegram implements Observer {
+	update(vacancies: string[]): void {
+		
+	}
+}
+
+
 class JobSite implements Observed {
 	private subscribers: Observer[] = [];
 	private vacancies: string[] = [];
