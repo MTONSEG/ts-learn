@@ -1,60 +1,107 @@
 interface IChat {
-	sendMess(mess: string, user: IUser): void,
+	sendMess(member: IMember, msg: string): void;
+	addToChat(member: IMember): void;
+	removeMember(member: IMember): void;
 }
 
-interface IUser {
-	sendMess(mess: string): void,
-	getMess(mess: string): void,
+interface IMember {
+	sendMess(msg: string): void;
+	getMess(msg: string): void;
+	getName(): string;
+
 }
 
-class TextChat implements IChat {
+class Chatroom implements IChat {
+	private members: IMember[] = [];
 
-	private users: IUser[] = [];
+	addToChat(member: IMember): void {
+		if (this.members.includes(member)) {
 
-	addUser = (user: IUser) => { this.users.push(user) }
+			console.log(`${member.getName()} already added to this chat`);
 
-	sendMess(mess: string, user: IUser): void {
-		if (!this.users.includes(user)) {
-			console.log(`You can't send message in this chat`);
 		} else {
-			for (let u of this.users) {
 
-				if (u != user) {
-					u.getMess(mess);
-				}
+			this.members.push(member);
 
-			}
+			if (member instanceof Admin) console.log('Added new Admin');
+
+			else console.log(`${member.getName()} has been added to this chatroom`);
+
 		}
+	}
+
+	removeMember(member: IMember): void {
+		let index: number = this.members.indexOf(member);
+
+		if (index < 0) console.log('This member is not defined');
+		else {
+			this.members.splice(index, 1);
+
+			console.log(`${member.getName()} has been removed from this chatroom`);
+		}
+
+	}
+
+	sendMess(member: IMember, msg: string) {
+		if (member instanceof Admin) console.log('\nImportant!!!\n');
+
+		for (let current of this.members) {
+
+			if (current != member) {
+				current.getMess(msg);
+			}
+
+		}
+		console.log('\n=====\n')
 	}
 }
 
-class User implements IUser {
+
+class Member implements IMember {
 	constructor(
 		private name: string,
-		private chat: IChat,
+		private chatroom: IChat
 	) { }
 
-	setChat = (chat: IChat) => { this.chat = chat };
+	sendMess(msg: string): void {
+		this.chatroom.sendMess(this, msg);
+	}
 
-	setName = (name: string): void => { this.name = name };
+	getMess(msg: string): void {
+		console.log(`${this.name} received message: \n - ${msg}\n---------`);
+	}
 
-	getName = (): string => this.name;
-
-	sendMess = (mess: string): void => { this.chat.sendMess(mess, this) };
-
-	getMess = (mess: string): void => { console.log(`${this.name}: ${mess}`) };
-
+	getName(): string {
+		return this.name;
+	}
 }
 
-const textChat = new TextChat();
+class Admin extends Member {
+	constructor(
+		private chat: IChat
+	) {
+		super('Admin', chat);
+	}
+}
 
-const ivan = new User('Ivan', textChat);
-const vlad = new User('Vlad', textChat);
-const max = new User('Max', textChat);
+const chatroom = new Chatroom();
 
-textChat.addUser(max);
-textChat.addUser(vlad);
-textChat.addUser(ivan);
+const john = new Member('John', chatroom);
+const jack = new Member('Jack', chatroom);
+const ron = new Member('Ron', chatroom);
+const admin = new Admin(chatroom);
 
-max.sendMess('I am first!');
-vlad.sendMess('I am second!');
+chatroom.addToChat(john);
+chatroom.addToChat(jack);
+chatroom.addToChat(ron);
+chatroom.addToChat(admin);
+
+jack.sendMess('Hi all');
+john.sendMess('Hi, Jack!');
+ron.sendMess('Hi, Jack!');
+admin.sendMess('Update chatroom');
+
+chatroom.removeMember(jack);
+chatroom.removeMember(jack);
+chatroom.addToChat(jack);
+chatroom.addToChat(jack);

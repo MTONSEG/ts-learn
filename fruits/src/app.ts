@@ -1,7 +1,7 @@
 interface IFruit {
 	getName(): string,
 	getWeight(): number,
-	getColor():string
+	getColor(): string
 }
 
 abstract class Fruit implements IFruit {
@@ -15,11 +15,11 @@ abstract class Fruit implements IFruit {
 		return Math.floor(Math.random() * (max - min + 1) + min);
 	}
 
-	static createGroup(...rest: IFruit []): IFruit[] {
+	static createGroup(...rest: IFruit[]): IFruit[] {
 		return rest;
 	}
 
-	static sort(arr:IFruit[], rank: string): void {
+	static sort(arr: IFruit[], rank: string): void {
 		for (let i: number = 0; i < arr.length; i++) {
 
 			for (let k: number = 0; k < arr.length - 1; k++) {
@@ -86,7 +86,7 @@ class Apple extends Fruit {
 	getFullInfo(): string {
 		let name: string = this.getName();
 		let color: string = this.getColor();
-		
+
 		return `${name} ${color}`;
 	}
 }
