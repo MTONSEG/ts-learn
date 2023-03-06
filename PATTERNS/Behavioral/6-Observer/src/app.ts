@@ -21,7 +21,7 @@ class Subscriber implements Observer {
 }
 
 class MyTelegram {
-	private name: string;
+	constructor(private name: string) { }
 
 	getName(): string {
 		return this.name;
@@ -34,11 +34,23 @@ class MyTelegram {
 	}
 }
 
-class Test extends MyTelegram implements Observer {
+class MyTelegramFirst extends MyTelegram implements Observer {
 	update(vacancies: string[]): void {
-		
+		console.log(`Hi ${this.getName()}\n We have some changes in vacancies:\n ${vacancies}\n=======`);
 	}
 }
+
+class MyTelegramSecond implements Observer {
+	constructor(
+		private telegram: MyTelegram
+	) { }
+
+	update(vacancies: string[]): void {
+		console.log(`Hi ${this.telegram.getName()}\n We have some changes in vacancies:\n ${vacancies}\n=======`);
+	}
+}
+
+
 
 
 class JobSite implements Observed {
@@ -76,6 +88,10 @@ class JobSite implements Observed {
 
 
 const vacancyDevSite = new JobSite();
+const telegramFirst = new MyTelegramFirst('First');
+const telegramSecond = new MyTelegramSecond(new MyTelegram('Second'));
+
+
 
 const ivan = new Subscriber('Ivan');
 const alex = new Subscriber('Alex');
@@ -84,9 +100,12 @@ const john = new Subscriber('John');
 vacancyDevSite.subscribe(ivan);
 vacancyDevSite.subscribe(alex);
 vacancyDevSite.subscribe(john);
+vacancyDevSite.subscribe(telegramFirst);
+vacancyDevSite.subscribe(telegramSecond);
 
 vacancyDevSite.addVacancy('Junior JS Developer');
 vacancyDevSite.addVacancy('Senior Java Developer');
 vacancyDevSite.addVacancy('Middle Java Developer');
 vacancyDevSite.addVacancy('Trainee JS Developer');
+vacancyDevSite.addVacancy('Designer');
 vacancyDevSite.removeVacancy('Senior Java Developer');

@@ -10,6 +10,9 @@ class Subscriber {
     }
 }
 class MyTelegram {
+    constructor(name) {
+        this.name = name;
+    }
     getName() {
         return this.name;
     }
@@ -20,13 +23,17 @@ class MyTelegram {
         return '3434';
     }
 }
-class Test {
-    constructor(name) {
-        this.name = name;
-        this.test.setName(name);
+class MyTelegramFirst extends MyTelegram {
+    update(vacancies) {
+        console.log(`Hi ${this.getName()}\n We have some changes in vacancies:\n ${vacancies}\n=======`);
+    }
+}
+class MyTelegramSecond {
+    constructor(telegram) {
+        this.telegram = telegram;
     }
     update(vacancies) {
-        console.log(`Hi ${this.test.getName()}\n We have some changes in vacancies:\n ${vacancies}\n=======`);
+        console.log(`Hi ${this.telegram.getName()}\n We have some changes in vacancies:\n ${vacancies}\n=======`);
     }
 }
 class JobSite {
@@ -57,17 +64,20 @@ class JobSite {
     }
 }
 const vacancyDevSite = new JobSite();
+const telegramFirst = new MyTelegramFirst('First');
+const telegramSecond = new MyTelegramSecond(new MyTelegram('Second'));
 const ivan = new Subscriber('Ivan');
 const alex = new Subscriber('Alex');
 const john = new Subscriber('John');
-const test = new Test('Test');
 vacancyDevSite.subscribe(ivan);
 vacancyDevSite.subscribe(alex);
 vacancyDevSite.subscribe(john);
-// vacancyDevSite.subscribe(test);
+vacancyDevSite.subscribe(telegramFirst);
+vacancyDevSite.subscribe(telegramSecond);
 vacancyDevSite.addVacancy('Junior JS Developer');
 vacancyDevSite.addVacancy('Senior Java Developer');
 vacancyDevSite.addVacancy('Middle Java Developer');
 vacancyDevSite.addVacancy('Trainee JS Developer');
+vacancyDevSite.addVacancy('Designer');
 vacancyDevSite.removeVacancy('Senior Java Developer');
 //# sourceMappingURL=app.js.map
