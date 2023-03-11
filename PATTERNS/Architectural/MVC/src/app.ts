@@ -1,21 +1,6 @@
 type nullString = null | string;
 
-interface IView {
-	getMessage(msg: string): void;
-	setMiss(location: string): void;
-	setHit(location: string): void;
-}
-
-interface IModel {
-	fire(shoot: string): void;
-	getShips(): string[];
-}
-
-interface IController {
-	processShoot(shoot: string): void
-}
-
-class UI implements IView {
+class View {
 	getMessage(msg: string): void {
 		let message: HTMLDivElement = document.querySelector('.field__mess');
 		message.textContent = msg;
@@ -24,28 +9,27 @@ class UI implements IView {
 	setMiss(location: string): void {
 		let cell: HTMLElement = document.getElementById(location);
 		cell.classList.add('miss');
-		this.getMessage('Miss =(');
 	}
 
 	setHit(location: string): void {
 		let cell = document.getElementById(location);
 		cell.classList.add('hit');
-		this.getMessage('WOW!!! You HIT');
 	}
 }
 
 
-class Model implements IModel {
+class Model {
 	private ships: string[] = ['1', '2', '3', '10'];
 	private amountHit: number = 0;
 
-	constructor(private view: IView) { }
+	constructor(private view: View) { }
 
 	fire(cell: string): void {
 		let isHit: boolean = this.ships.includes(cell);
 
 		if (isHit) {
 			this.view.setHit(cell);
+			this.view.getMessage('WOW!!! You HIT');
 
 			this.amountHit++;
 
@@ -55,20 +39,33 @@ class Model implements IModel {
 
 		} else {
 			this.view.setMiss(cell);
+			this.view.getMessage('Miss =(');
 		}
 	}
 
 	getShips(): string[] {
 		return this.ships;
 	}
+
+	setShips(): void {
+
+		for (let i: number = 0; i < this.ships.length; i++) {
+			let random: string = String(Math.floor((Math.random() * (16 - 1)) + 1));
+
+			if (!this.ships.includes(random)) {
+				this.ships[i] = random;
+			} else {
+				i--;
+			}
+		}
+
+	}
 }
 
-class Controller implements IController {
-	private amountHits: number = 0;
-
+class Controller {
 	constructor(
-		private model: IModel,
-		private view: IView
+		private model: Model,
+		private view: View
 	) { }
 
 	processShoot(shoot: string): void {
@@ -79,6 +76,10 @@ class Controller implements IController {
 		} else {
 			this.view.getMessage('This cell is not defined');
 		}
+	}
+
+	newGame(): void {
+		this.model.setShips();
 	}
 
 	private parseShoot(shoot: string): nullString {
@@ -100,10 +101,9 @@ class Controller implements IController {
 	}
 }
 
-const view = new UI();
+const view = new View();
 const model = new Model(view);
 const controller = new Controller(model, view);
-
 
 const form: HTMLElement = document.querySelector('.form');
 
@@ -115,5 +115,7 @@ if (form) {
 		let value: string = input.value;
 
 		controller.processShoot(value);
+
+		input.value = '';
 	})
 }

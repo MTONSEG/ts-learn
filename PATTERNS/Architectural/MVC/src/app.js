@@ -1,4 +1,4 @@
-class UI {
+class View {
     getMessage(msg) {
         let message = document.querySelector('.field__mess');
         message.textContent = msg;
@@ -6,12 +6,10 @@ class UI {
     setMiss(location) {
         let cell = document.getElementById(location);
         cell.classList.add('miss');
-        this.getMessage('Miss =(');
     }
     setHit(location) {
         let cell = document.getElementById(location);
         cell.classList.add('hit');
-        this.getMessage('WOW!!! You HIT');
     }
 }
 class Model {
@@ -24,6 +22,7 @@ class Model {
         let isHit = this.ships.includes(cell);
         if (isHit) {
             this.view.setHit(cell);
+            this.view.getMessage('WOW!!! You HIT');
             this.amountHit++;
             if (this.amountHit == this.ships.length) {
                 this.view.getMessage('You Win');
@@ -31,17 +30,28 @@ class Model {
         }
         else {
             this.view.setMiss(cell);
+            this.view.getMessage('Miss =(');
         }
     }
     getShips() {
         return this.ships;
+    }
+    setShips() {
+        for (let i = 0; i < this.ships.length; i++) {
+            let random = String(Math.floor((Math.random() * (16 - 1)) + 1));
+            if (!this.ships.includes(random)) {
+                this.ships[i] = random;
+            }
+            else {
+                i--;
+            }
+        }
     }
 }
 class Controller {
     constructor(model, view) {
         this.model = model;
         this.view = view;
-        this.amountHits = 0;
     }
     processShoot(shoot) {
         let location = this.parseShoot(shoot);
@@ -51,6 +61,9 @@ class Controller {
         else {
             this.view.getMessage('This cell is not defined');
         }
+    }
+    newGame() {
+        this.model.setShips();
     }
     parseShoot(shoot) {
         let regex = /[aA-dD][0-3]/g;
@@ -64,7 +77,7 @@ class Controller {
         return null;
     }
 }
-const view = new UI();
+const view = new View();
 const model = new Model(view);
 const controller = new Controller(model, view);
 const form = document.querySelector('.form');
@@ -74,6 +87,7 @@ if (form) {
     btn.addEventListener('click', () => {
         let value = input.value;
         controller.processShoot(value);
+        input.value = '';
     });
 }
 //# sourceMappingURL=app.js.map
