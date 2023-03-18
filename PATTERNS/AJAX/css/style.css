@@ -1,0 +1,89 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	height: 100%;
+	width: 100%;
+	font-size: 20px;
+	color: #fff;
+	background: #000;
+}
+
+.wrapper {
+	margin: 40px auto 0;
+	max-height: 500px;
+	max-width: 500px;
+	position: relative;
+	border: 2px solid #fff;
+	padding: 10px 10px 110px;
+}
+
+.mess-list {
+	height: 390px;
+	overflow: auto;
+}
+
+.mess-list::-webkit-scrollbar {
+	width: 1px;
+}
+.mess-list::-webkit-scrollbar-track {
+	background: #fff;
+}
+.mess-list::-webkit-scrollbar-thumb {
+	background: rgb(66, 102, 11);
+}
+
+
+.mess-item {
+	border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+	padding: 5px;
+}
+
+.mess:last-child {
+	border: 0;
+}
+
+.mess-title {
+	font-size: 25px;
+	line-height: 120%;
+	color: beige;
+}
+
+.forms {
+	display: flex;
+	flex-direction: column;
+	position:absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	border: 5px solid transparent;
+}
+
+.input {
+	border: 0;
+	padding: 10px;
+	margin: 0 0 10px;
+	border: 2px solid transparent;
+	transition: 0.3s;
+}
+
+.input:focus {
+	border-color: rgb(66, 102, 11);
+	outline: none;
+}
+
+.btn {
+	background: rgb(66, 102, 11);
+	border: 0;
+	color: #fff;
+	padding: 10px;
+	transition: 0.3s;
+	cursor: pointer;
+}
+
+.btn:hover {
+	box-shadow: inset 0 0 5px #000;
+}
